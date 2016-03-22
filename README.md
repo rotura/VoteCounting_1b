@@ -9,7 +9,9 @@ Vote Counting
 
 # Authors
 
-* Jose Labra
+* Adrian
+* Ana
+* Enol
 
 
 
