@@ -23,6 +23,14 @@ public class Vote {
 
 
 
+	public void setPollingStationCode(Integer pollingStationCode) {
+		this.pollingStationCode = pollingStationCode;
+	}
+
+	public Integer getPollingStationCode() {
+		return pollingStationCode;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -35,10 +43,10 @@ public class Vote {
 	public void setParty(String party) {
 		this.party = party;
 	}
-	public Integer getColegio() {
+	/*public Integer getColegio() {
 		return pollingStationCode;
 	}
 	public void setColegio(Integer colegio) {
 		this.pollingStationCode = colegio;
-	}
+	}*/
 }

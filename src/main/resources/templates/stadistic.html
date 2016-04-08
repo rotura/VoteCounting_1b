@@ -1,7 +1,16 @@
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
   <head>
-    
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+   <title>Resultados</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen"/> 
+ 
+  </head>
+
+  <body>
+  
+     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -54,9 +63,13 @@
           });
       }
     </script>
-  </head>
-
-  <body>
+  
+  
+  
+  
+  <h1 align="center">Resultado de las Votaciones</h1>
+ 
+  
     <!--Div that will hold the pie chart-->
     <div id="chart_div"></div>
     
