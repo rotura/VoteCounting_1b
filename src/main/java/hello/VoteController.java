@@ -25,6 +25,7 @@ public class VoteController {
 	@RequestMapping(value="/stadistic", method=RequestMethod.GET)
 	    public String stadistic(Model model) {
 	        model.addAttribute("pollingStations", repository.findAllPollingStations());
+			model.addAttribute("votesPartyPStation", repository.findVotersByPollingStationAndParty());
 	        return "stadistic";
 	    }
 	

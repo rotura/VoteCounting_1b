@@ -77,6 +77,17 @@
     	
 	    <div th:id="${'chart_div_' + pollingStation}"></div>
     </div>
+	<br/>
+	<br/>
+	<br/>
+	Prueba del segundo modo de muestra de datos, sin gráficos
+	<div th:each="votes: ${votesPartyPStation}">
+    	<h2 th:text="'Colegio electoral:'+ ${votes[0]}" />
+    	<h2 th:text="'Partido:'+ ${votes[1]}" />
+    	<h2 th:text="'Votos:'+ ${votes[2]}" />
+		<br/>
+    </div>	
+	
     
   </body>
 </html>

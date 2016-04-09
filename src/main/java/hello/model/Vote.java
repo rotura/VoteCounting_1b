@@ -43,10 +43,5 @@ public class Vote {
 	public void setParty(String party) {
 		this.party = party;
 	}
-	/*public Integer getColegio() {
-		return pollingStationCode;
-	}
-	public void setColegio(Integer colegio) {
-		this.pollingStationCode = colegio;
-	}*/
+	
 }
