@@ -20,7 +20,7 @@
       google.charts.setOnLoadCallback(drawChart);
 
       // Set chart options
-      var options = {'title':'Porcentaje total de votos',
+      var options = {'title':'',
                      'width':400,
                      'height':300};
 
@@ -28,6 +28,7 @@
       // instantiates the pie chart, passes in the data and
       // draws it.
       function drawChart() {
+    	  
     	  
     	  var pollingStations = /*[[${pollingStations}]]*/ [];
     	  
@@ -45,6 +46,7 @@
     	          }
               });
     	  });
+    	  
 
     	  $.ajax({
 	          url: "stadistic_json",
@@ -58,36 +60,59 @@
 	              chart.draw(data, options);
 	          }
           });
+    	  
+          // Create the data table.
+          var data = new google.visualization.DataTable()
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          
+          
+          data.addRows([
+                        ['Mushrooms', 3],
+                        ['Onions', 1],
+                        ['Olives', 1],
+                        ['Zucchini', 1],
+                        ['Pepperoni', 2]
+                      ]);
+
+          
+
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('chart'));
+          chart.draw(data, options);
+	        
       }
     </script>
   
   </head>
-  
-  <script>
-	function myFunction() {
-    var x = document.getElementById("mySelect").value;
-    document.getElementById("demo").innerHTML = "You selected: " + x;
-	}
-</script>
 
-  <body >
-  
-  
-  <h1 align="center">Resultado de las Votaciones</h1>
-  
-  
-    <!--Div that will hold the pie chart-->
-    <div  id="chart_div"></div>
-    
-    <div th:each="pollingStation: ${pollingStations}">
-    	<h2 th:text="'Colegio electoral:'+ ${pollingStation[0]}" ></h2>
-    	
-   
-	     <div th:id="${'chart_div_' + pollingStation}"></div>
+
+
+<body>
+
+
+	<h1 align="center">Resultado de las Votaciones</h1>
+	<br />
+	<br />
+	<div>
+	<!--Tata de resultado total-->
+	
+	<div style="float:left;width:50%;">
+	<h2 >Resultado de las elecciones</h2>
+	<div id="chart_div"></div>
     </div>
-	<br/>
-	<br/>
-	<br/>
+    
+    
+	<div th:each="pollingStation: ${pollingStations}" style="float:right;width:50%;">
+		
+<h2>Numero de votos por colegio</h2>
+		<div th:id="${'chart_div_' + pollingStation}" ></div>
+	</div>
+	</div>
+	<br />
+	<br />
+	<br />
+	<!--  
 	Prueba del segundo modo de muestra de datos, sin gráficos
 	<div th:each="votes: ${votesPartyPStation}">
     	<h2 th:text="'Colegio electoral:'+ ${votes[0]}" ></h2>
@@ -96,24 +121,23 @@
 		<br/>
 		<div th:id="${'chart_div_' + votes}"></div>
     </div>
-    
+    -->
+
+	<h2>Resultado votaciones por colegio electoral</h2>
 	Selecciona el colegio electoral
-
+	
+	<form action="#" th:action="@{/st}" th:object="${vote}" method="post">
 	<select name="Colegios" onchange="myFunction()">
-		<option value="C01">2151</option>
-		<option value="C02">2500</option>
-		<option value="C03">2535</option>
+	<div th:each="c: ${colegios}">
+	<h2 th:text="'Colegio electoral:'+ ${c[0]}" ></h2>
+		<option th:value="${c[0]}" ><p th:text="'' + ${c[0]}" /></option>
+		
+	</div>	
 	</select>
-	<div th:each="votes: ${votosPartido}">
-
-		<h2 th:text="'Partido:'+ ${votes[0]}"></h2>
-		<h2 th:text="'Votos:'+ ${votes[1]}"></h2>
-		<br />
-		<div th:id="${'chart_div_' + votes}"></div>
-	</div>
-
-
-
+    <p><input type="submit" value="Buscar" /></p>
+	</form>
+	
+	<div id="chart"></div>
 
 
 </body>

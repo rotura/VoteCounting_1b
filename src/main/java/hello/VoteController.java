@@ -5,14 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import hello.model.UserInfo;
 import hello.model.Vote;
 import hello.repositorios.VoteRepository;
 
@@ -24,10 +28,16 @@ public class VoteController {
 	
 	@RequestMapping(value="/stadistic", method=RequestMethod.GET)
 	    public String stadistic(Model model) {
-	        model.addAttribute("pollingStations", repository.findAllPollingStations());
+		
+		List <Object[]> nueva=new ArrayList<>();
+		nueva.add(repository.findAllPollingStations().get(0));
+				
+	        model.addAttribute("pollingStations", nueva);
 			model.addAttribute("votesPartyPStation", repository.findVotersByPollingStationAndParty());
 			
 			model.addAttribute("votosPartido",repository.findVotesByPollingStationAndParty(2500));
+			
+			model.addAttribute("colegios",repository.findAllPollingStations());
 	        return "stadistic";
 	    }
 	
@@ -37,6 +47,7 @@ public class VoteController {
 		
 		List<Object[]> parties = repository.countAllVotes();
 		
+	
 		Map<String, Object> data = new HashMap<>();
 		
 		List<Map<String, String>> cols = new ArrayList<>();
@@ -76,6 +87,8 @@ public class VoteController {
 		
 		return data;
 	}
+	
+	
 
 	@RequestMapping(value="/stadistic_pollingstation_json/{pollingStationCode}", method=RequestMethod.GET)
 	@ResponseBody
@@ -121,6 +134,15 @@ public class VoteController {
 		data.put("rows", rows);
 		
 		return data;
+	}
+	
+	@RequestMapping(value="/st", method=RequestMethod.POST)
+    public String greetingSubmit(@ModelAttribute Vote greeting, Model model, HttpSession sesion) {
+		
+		
+		
+		return "stadistic";
+   
 	}
 
 }
