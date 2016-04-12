@@ -4,7 +4,7 @@
   <head>
    <title>Resultados</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen"/> 
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen"/> 
  
  
      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -62,32 +62,59 @@
     </script>
   
   </head>
+  
+  <script>
+	function myFunction() {
+    var x = document.getElementById("mySelect").value;
+    document.getElementById("demo").innerHTML = "You selected: " + x;
+	}
+</script>
 
-  <body>
+  <body >
   
   
   <h1 align="center">Resultado de las Votaciones</h1>
- 
+  
   
     <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
+    <div  id="chart_div"></div>
     
     <div th:each="pollingStation: ${pollingStations}">
-    	<h2 th:text="'Colegio electoral:'+ ${pollingStation[0]}" />
+    	<h2 th:text="'Colegio electoral:'+ ${pollingStation[0]}" ></h2>
     	
-	    <div th:id="${'chart_div_' + pollingStation}"></div>
+   
+	     <div th:id="${'chart_div_' + pollingStation}"></div>
     </div>
 	<br/>
 	<br/>
 	<br/>
 	Prueba del segundo modo de muestra de datos, sin gráficos
 	<div th:each="votes: ${votesPartyPStation}">
-    	<h2 th:text="'Colegio electoral:'+ ${votes[0]}" />
-    	<h2 th:text="'Partido:'+ ${votes[1]}" />
-    	<h2 th:text="'Votos:'+ ${votes[2]}" />
+    	<h2 th:text="'Colegio electoral:'+ ${votes[0]}" ></h2>
+    	<h2 th:text="'Partido:'+ ${votes[1]}" ></h2>
+      <h2 th:text="'Votos:'+ ${votes[2]}" ></h2>
 		<br/>
-    </div>	
-	
+		<div th:id="${'chart_div_' + votes}"></div>
+    </div>
     
-  </body>
+	Selecciona el colegio electoral
+
+	<select name="Colegios" onchange="myFunction()">
+		<option value="C01">2151</option>
+		<option value="C02">2500</option>
+		<option value="C03">2535</option>
+	</select>
+	<div th:each="votes: ${votosPartido}">
+
+		<h2 th:text="'Partido:'+ ${votes[0]}"></h2>
+		<h2 th:text="'Votos:'+ ${votes[1]}"></h2>
+		<br />
+		<div th:id="${'chart_div_' + votes}"></div>
+	</div>
+
+
+
+
+
+</body>
 </html>

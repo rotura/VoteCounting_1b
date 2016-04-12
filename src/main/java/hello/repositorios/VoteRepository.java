@@ -17,6 +17,16 @@ public interface VoteRepository extends CrudRepository<Vote, Long> {
 	List<Object[]> findAllPollingStations();
 	
 	//Obtención de los votos por partido y colegio
-	@Query("SELECT v.pollingStationCode, v.party, COUNT(v.id) FROM Vote v GROUP By v.party, v.pollingStationCode")
+	@Query("SELECT  v.pollingStationCode, v.party, COUNT(v.id) FROM Vote v GROUP By v.pollingStationCode,v.party ORDER BY v.pollingStationCode")
 	List<Object[]> findVotersByPollingStationAndParty();
+	
+	//Obtención de los votos por partido y colegio
+	@Query("SELECT  v.party, COUNT(v.id) FROM Vote v  WHERE v.pollingStationCode=? GROUP By v.party")
+	List<Object[]> findVotesByPollingStationAndParty(Integer sc);
+	
+	
+	//Obtención de los votos por partido y colegio
+	@Query("SELECT DISTINCT v.pollingStationCode FROM Vote v")
+	List<Object[]> findStationCodes();
+	
 }

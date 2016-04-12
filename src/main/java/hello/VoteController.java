@@ -26,6 +26,8 @@ public class VoteController {
 	    public String stadistic(Model model) {
 	        model.addAttribute("pollingStations", repository.findAllPollingStations());
 			model.addAttribute("votesPartyPStation", repository.findVotersByPollingStationAndParty());
+			
+			model.addAttribute("votosPartido",repository.findVotesByPollingStationAndParty(2500));
 	        return "stadistic";
 	    }
 	
