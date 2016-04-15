@@ -54,6 +54,7 @@
 	          success: function (json) {
 	              // Create the data table.
 	              var data = new google.visualization.DataTable(json);
+	              
 
 	              // Instantiate and draw our chart, passing in some options.
 	              var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -61,25 +62,41 @@
 	          }
           });
     	  
+    	  $.ajax({
+	          url: "stadistic_col",
+	          dataType: "json",
+	          success: function (json) {
+	              // Create the data table.
+	              var data = new google.visualization.DataTable(json);
+	              
+	              var option = {'title':'Colegio '+document.getElementById('selected_text').value,
+	                      'width':400,
+	                      'height':300};
+	              // Instantiate and draw our chart, passing in some options.
+	              var chart = new google.visualization.PieChart(document.getElementById('chart'));
+	              chart.draw(data, option);
+	          }
+          });
+    	  
           // Create the data table.
-          var data = new google.visualization.DataTable()
-          data.addColumn('string', 'Topping');
-          data.addColumn('number', 'Slices');
+//           var data = new google.visualization.DataTable()
+//           data.addColumn('string', 'Partido');
+//           data.addColumn('number', 'Votos');
           
           
-          data.addRows([
-                        ['Mushrooms', 3],
-                        ['Onions', 1],
-                        ['Olives', 1],
-                        ['Zucchini', 1],
-                        ['Pepperoni', 2]
-                      ]);
+//           data.addRows([
+//                         ['Mushrooms', 3],
+//                         ['Onions', 1],
+//                         ['Olives', 1],
+//                         ['Zucchini', 1],
+              //          ['Pepperoni', 2]
+            //          ]);
 
           
 
           // Instantiate and draw our chart, passing in some options.
-          var chart = new google.visualization.PieChart(document.getElementById('chart'));
-          chart.draw(data, options);
+          //var chart = new google.visualization.PieChart(document.getElementById('chart'));
+         // chart.draw(data, options);
 	        
       }
     </script>
@@ -123,22 +140,34 @@
     </div>
     -->
 
-	<h2>Resultado votaciones por colegio electoral</h2>
+	<h2>Votaciones por colegio electoral</h2>
 	Selecciona el colegio electoral
 	
-	<form action="#" th:action="@{/st}" th:object="${vote}" method="post">
-	<select name="Colegios" onchange="myFunction()">
+	<form action="#" th:action="@{/stadistic}" th:object="${colegio}" method="post" >
+	<select name="Colegios" value="2500" onchange="document.getElementById('selected_text').value=this.options[this.selectedIndex].text">
 	<div th:each="c: ${colegios}">
 	<h2 th:text="'Colegio electoral:'+ ${c[0]}" ></h2>
 		<option th:value="${c[0]}" ><p th:text="'' + ${c[0]}" /></option>
 		
 	</div>	
 	</select>
-    <p><input type="submit" value="Buscar" /></p>
+    <p><input type="submit" name="buscar" value="Buscar" /></p>
+    <p><input type="hidden"  name="selected_text" id="selected_text" value="" th:field="*{pollingStationCode}"/></p>
 	</form>
-	
 	<div id="chart"></div>
 
+
+<?php
+
+if(isset($_POST['buscar']))
+{
+
+    $makerValue = $_POST['Colegios']; // make value
+
+    $maker = mysql_real_escape_string($_POST['selected_text']); // get the selected text
+    echo $maker;
+}
+ ?>
 
 </body>
 </html>

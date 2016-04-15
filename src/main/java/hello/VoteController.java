@@ -26,6 +26,8 @@ public class VoteController {
 	@Autowired
 	private VoteRepository repository;
 	
+	private List<Object[]> parties;
+	
 	@RequestMapping(value="/stadistic", method=RequestMethod.GET)
 	    public String stadistic(Model model) {
 		
@@ -38,6 +40,8 @@ public class VoteController {
 			model.addAttribute("votosPartido",repository.findVotesByPollingStationAndParty(2500));
 			
 			model.addAttribute("colegios",repository.findAllPollingStations());
+			
+			model.addAttribute("colegio", new Vote());
 	        return "stadistic";
 	    }
 	
@@ -136,13 +140,72 @@ public class VoteController {
 		return data;
 	}
 	
-	@RequestMapping(value="/st", method=RequestMethod.POST)
+	@RequestMapping(value="/stadistic", method=RequestMethod.POST)
     public String greetingSubmit(@ModelAttribute Vote greeting, Model model, HttpSession sesion) {
+		List <Object[]> nueva=new ArrayList<>();
+		nueva.add(repository.findAllPollingStations().get(0));
+				
+	        model.addAttribute("pollingStations", nueva);
+			model.addAttribute("votesPartyPStation", repository.findVotersByPollingStationAndParty());
+			
+			model.addAttribute("votosPartido",repository.findVotesByPollingStationAndParty(2500));
+			
+			model.addAttribute("colegios",repository.findAllPollingStations());
+			
+			 parties = repository.findVotesByPollingStationAndParty(greeting.getPollingStationCode());
+			//consulta para rellenar el grafico
+			model.addAttribute("colegio", greeting);
+			return "stadistic";
+	}
+
+	@RequestMapping(value="/stadistic_col", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> stadisticCol(Model model) {
+
+		 
+
+		Map<String, Object> data = new HashMap<>();
 		
 		
+			
+			List<Map<String, String>> cols = new ArrayList<>();
+			
+			Map<String, String> col = new HashMap<>();
+			col.put("name", "Partido");
+			col.put("type", "string");
+			cols.add(col);
+
+			col = new HashMap<>();
+			col.put("name", "Votos");
+			col.put("type", "number");
+			cols.add(col);
+			
+			data.put("cols", cols);
+			
+			if(parties!=null){
+			List<Map<String, List<Map<String, Object>>>> rows = new ArrayList<>();
+
+			for (Object[] party: parties) {
+				Map<String, Object> partido = new HashMap<>();
+				partido.put("v", party[0]);
 		
-		return "stadistic";
-   
+				Map<String, Object> votos = new HashMap<>();
+				votos.put("v", party[1]);
+		
+				List<Map<String, Object>> celdas = new ArrayList<>();
+				celdas.add(partido);
+				celdas.add(votos);
+				
+				Map<String, List<Map<String, Object>>> row = new HashMap<>();
+				row.put("c", celdas);
+				
+				rows.add(row);
+			}
+			
+			data.put("rows", rows);
+		}
+	
+	return data;
 	}
 
 }
