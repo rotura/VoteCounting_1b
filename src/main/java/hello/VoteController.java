@@ -27,6 +27,9 @@ public class VoteController {
 	private VoteRepository repository;
 	
 	private List<Object[]> parties;
+	private List<Object[]> votosPartido;
+	private Vote partido= new Vote();
+	private Vote colegio=new Vote();
 	
 	@RequestMapping(value="/stadistic", method=RequestMethod.GET)
 	    public String stadistic(Model model) {
@@ -40,8 +43,11 @@ public class VoteController {
 			model.addAttribute("votosPartido",repository.findVotesByPollingStationAndParty(2500));
 			
 			model.addAttribute("colegios",repository.findAllPollingStations());
+			List <Object[]> nueva1=repository.findPartidos();
+			model.addAttribute("partidos",repository.findPartidos());
 			
 			model.addAttribute("colegio", new Vote());
+			model.addAttribute("partido", new Vote());
 	        return "stadistic";
 	    }
 	
@@ -155,6 +161,10 @@ public class VoteController {
 			 parties = repository.findVotesByPollingStationAndParty(greeting.getPollingStationCode());
 			//consulta para rellenar el grafico
 			model.addAttribute("colegio", greeting);
+			colegio=greeting;
+			model.addAttribute("partidos",repository.findPartidos());
+			model.addAttribute("partido",partido);
+			
 			return "stadistic";
 	}
 
@@ -206,6 +216,70 @@ public class VoteController {
 		}
 	
 	return data;
+	}
+	
+	@RequestMapping(value="/stadistic_party", method=RequestMethod.POST)
+    public String greetingParty(@ModelAttribute Vote greeting, Model model, HttpSession sesion) {
+		List <Object[]> nueva=new ArrayList<>();
+		nueva.add(repository.findAllPollingStations().get(0));
+				
+	        model.addAttribute("pollingStations", nueva);
+			model.addAttribute("votesPartyPStation", repository.findVotersByPollingStationAndParty());
+			
+			model.addAttribute("votosPartido",repository.findVotesByPollingStationAndParty(2500));
+			
+			model.addAttribute("colegios",repository.findAllPollingStations());
+			model.addAttribute("partidos",repository.findPartidos());
+			
+			 votosPartido = repository.findVotespartido(greeting.getParty());
+			//consulta para rellenar el grafico
+			model.addAttribute("partido", greeting);
+			model.addAttribute("colegio",colegio);
+			return "stadistic";
+	}
+	
+	@RequestMapping(value="/stadistic_tab", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> stadisticTAb(Model model) {
+		Map<String, Object> data = new HashMap<>();
+		
+		List<Map<String, String>> cols = new ArrayList<>();
+		
+		Map<String, String> col = new HashMap<>();
+		col.put("name", "Colegio");
+		col.put("type", "number");
+		cols.add(col);
+
+		col = new HashMap<>();
+		col.put("name", "Votos");
+		col.put("type", "number");
+		cols.add(col);
+		
+		data.put("cols", cols);
+		
+		if(votosPartido!=null){
+			List<Map<String, List<Map<String, Object>>>> rows = new ArrayList<>();
+
+			for (Object[] party: votosPartido) {
+				Map<String, Object> partido = new HashMap<>();
+				partido.put("v", party[0]);
+		
+				Map<String, Object> votos = new HashMap<>();
+				votos.put("v", party[1]);
+		
+				List<Map<String, Object>> celdas = new ArrayList<>();
+				celdas.add(partido);
+				celdas.add(votos);
+				
+				Map<String, List<Map<String, Object>>> row = new HashMap<>();
+				row.put("c", celdas);
+				
+				rows.add(row);
+			}
+			data.put("rows", rows);
+		}
+		
+		return data;
 	}
 
 }
