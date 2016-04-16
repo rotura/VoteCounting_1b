@@ -7,6 +7,9 @@ Voters Subsystem
 
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/f4364ac928da4b11888d511bf9605739)](https://www.codacy.com/app/aninaglezg/VoteCounting_1b)
 
+[![codecov.io](https://codecov.io/github/Arquisoft/VoteCounting_1b/coverage.svg?branch=master)](https://codecov.io/github/Arquisoft/VoteCounting_1b?branch=master)
+
+
 BinTray
 
 [ ![Download](https://api.bintray.com/packages/rotura/arquisoft/VoteCounting_1b/images/download.svg) ](https://bintray.com/rotura/arquisoft/VoteCounting_1b/_latestVersion)
