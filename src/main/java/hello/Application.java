@@ -22,7 +22,7 @@ public class Application {
     }
     
   
-	@Bean
+	/*@Bean
 	public CommandLineRunner loaduser(UserInfoRepository repository) {
 		return (args) -> {
 			// save a couple of customers
@@ -35,7 +35,7 @@ public class Application {
 			
 			
 		};
-    }
+    }*/
 	
 	@Bean
 	public CommandLineRunner loadvotes(VoteRepository repository) {
