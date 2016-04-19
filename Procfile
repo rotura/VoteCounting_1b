@@ -1,1 +1,1 @@
-web: java -jar target/voters1b-0.0.1.jar -p $PORT
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/voters1b-0.0.1.jar
